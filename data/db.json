@@ -1,0 +1,21 @@
+{
+  "user": [
+    {
+      "id": "1",
+      "name": "badr",
+      "contact": {
+        "email": "badr.elkarfi@gmail.com"
+      },
+      "password": "BadrBadr"
+    },
+    {
+      "id": "2",
+      "name": "ikram",
+      "contact": {
+        "email": "ikram.elkarfi@gmail.com"
+      },
+      "password": "IkramIkram"
+    }
+    
+  ]
+}

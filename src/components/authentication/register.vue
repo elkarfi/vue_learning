@@ -10,7 +10,8 @@
         <p class="text-center text-3xl">Join Us.</p>
 
         <form class="flex flex-col pt-3 md:pt-8" onsubmit="event.preventDefault();">
-          <FormInput v-model="state.Name" label="Name" inputIdentifier="name" inputType="text" />
+          
+          <FormInput v-model="state.name" label="Name" inputIdentifier="name" inputType="text" />
 
           <FormInput
             v-model="state.contact.email"
@@ -18,8 +19,6 @@
             inputIdentifier="email"
             inputType="email"
           />
-
-          <span v-if="v$.contact.email.$error">{{ v$.contact.email.$errors[0].$message }}</span>
 
           <FormInput
             v-model="state.password"
@@ -36,6 +35,7 @@
           />
 
           <Button title="Register" type="submit" @click="submitForm" />
+
         </form>
 
         <div class="text-center pt-12 pb-12">
@@ -57,11 +57,12 @@ import Button from '../reusable/Button.vue'
 import { computed, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, minLength, sameAs } from '@vuelidate/validators'
+import axios from 'axios'
 
 
  
     const state = reactive({
-      Name: '',
+      name: '',
       contact: {
         email: ''
       },
@@ -71,7 +72,7 @@ import { required, email, minLength, sameAs } from '@vuelidate/validators'
 
     const rules = computed( ()=> { return   {
 
-      Name: { required },
+      name: { required },
       contact: {
         email: { required, email },
       },
@@ -83,22 +84,18 @@ import { required, email, minLength, sameAs } from '@vuelidate/validators'
     
   
 
-    const v$ = useVuelidate(rules, state)
+     const v$ = useVuelidate(rules, state)
 
-    const submitForm = async () => {
-      const result = await v$.value.$validate()
+     const submitForm = async () => {
+      
+     const result = await v$.value.$validate()
 
-      if (result) {
+      if (!result) return
 
-        alert('success');
+      axios.post('http://localhost:3000/user',{"name":state.name,"contact":{"email":state.contact.email},"password": state.password})
+      .then(response => console.log(response.status))
+      .catch(err => console.err(err));
 
-      } else {
-
-        alert('error');
-
-
-      }
-
-  }
+  }  
 
 </script>
